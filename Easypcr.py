@@ -15,8 +15,8 @@ def connect():
     baud_rate = baud_var.get()
     if selected_port and baud_rate:
         try:
-            global ser
-            ser = serial.Serial(selected_port, baud_rate)
+            global ser1
+            ser1 = serial.Serial(selected_port, baud_rate)
             status_message = f"Connected to {selected_port} at {baud_rate} baud"
             status_label.config(text=status_message, foreground="green")
             log_text.insert(tk.END, f"{status_message}\n")
@@ -31,8 +31,8 @@ def connect():
 
 def disconnect():
     try:
-        if ser.is_open:
-            ser.close()
+        if ser1.is_open:
+            ser1.close()
             status_message = "Disconnected"
             status_label.config(text=status_message, foreground="red")
             log_text.insert(tk.END, f"{status_message}\n")
@@ -87,8 +87,8 @@ def save_pcr_settings():
 
     try:
         # Modify the path to your SD card location
-        sd_card_path = "/path_to_sd_card"  # Replace with the actual path to your SD card
-        with open(f"{sd_card_path}/{protocol_name}.pcr", "w") as file:
+        sd_card_path = "/E:/bio"  # Replace with the actual path to your SD card
+        with open(f"{sd_card_path}/{protocol_name}.txt", "w") as file:
             file.write(file_content)
         success_message = f"PCR settings saved to {protocol_name}.pcr on the SD card.\n"
         log_text.insert(tk.END, success_message)
@@ -229,22 +229,30 @@ time_data = []
 temp_data = []
 
 def update_plot():
-    if ser.is_open:
+    if ser1.is_open:
         # Simulate data reading from serial
-        line = ser.readline().decode('utf-8').strip()
+        line = ser1.readline().decode('utf-8').strip()
         if line:
             try:
                 temp_data.append(float(line))  # Assuming line contains a float temperature
-                time_data.append(len(temp_data) * 10)  # Assuming 10 seconds intervals for each reading
+                time_data.append(len(temp_data) * 2)  # Assuming 10 seconds intervals for each reading
                 ax.clear()
                 ax.plot(time_data, temp_data, label='Peltier Temp')
                 ax.set_title('Temperature Plot')
                 ax.set_xlabel('Time (s)')
                 ax.set_ylabel('Temperature (°C)')
                 ax.legend()
+                plt.pause(0.1)
                 canvas.draw()
             except ValueError:
                 pass
+
+
+    root.after(1000, update_plot)
+
+    # Schedule plot updates
+ #   root.after(1000, update_plot)
+
 
 # Embed the plot in the GUI and center it at the top
 canvas = FigureCanvasTkAgg(fig, master=root)
