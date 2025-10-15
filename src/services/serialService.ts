@@ -184,8 +184,8 @@ class SerialService {
 
     try {
       return await Promise.race([readPromise, timeoutPromise]);
-    } catch (error) {
-      return new Uint8Array(0); // Return empty array on timeout
+    } catch {
+      return new Uint8Array(0);
     }
   }
 
