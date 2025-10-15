@@ -1,19 +1,11 @@
 import { serialService } from './serialService';
 import type { YModemProgressCallback, YModemResult } from '../types';
 
-/**
- * YMODEM Protocol Implementation for Firmware Transfer
- * Based on YMODEM specification with 128-byte blocks
- */
-
-// YMODEM Protocol Constants
-const SOH = 0x01;  // Start of 128-byte block
-const STX = 0x02;  // Start of 1024-byte block
-const EOT = 0x04;  // End of transmission
-const ACK = 0x06;  // Acknowledge
-const NAK = 0x15;  // Not acknowledge
-const CAN = 0x18;  // Cancel
-const CRC = 0x43;  // 'C' - Request CRC mode
+const SOH = 0x01;
+const EOT = 0x04;
+const ACK = 0x06;
+const CAN = 0x18;
+const CRC = 0x43;
 
 class YModemService {
   private blockSize = 128;

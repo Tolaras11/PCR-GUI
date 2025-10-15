@@ -14,7 +14,6 @@ import { useTemperatureStore } from '../stores/temperatureStore';
 import { useSerialStore } from '../stores/serialStore';
 import { serialService } from '../services/serialService';
 
-// Regex patterns for parsing temperature data
 const PELTIER_REGEX = /Peltier>\s*T:([+-]?\d+(?:\.\d+)?)\*C;/;
 const LID_REGEX = /Lid>\s*T:([+-]?\d+(?:\.\d+)?)\*C;/;
 
@@ -30,19 +29,16 @@ export const TemperaturePlot: React.FC = () => {
 
     setIsParsing(true);
 
-    // Set up serial data callback
     const handleSerialData = (chunk: string) => {
       bufferRef.current += chunk;
 
-      // Process complete lines
       const lines = bufferRef.current.split('\n');
-      bufferRef.current = lines.pop() || ''; // Keep incomplete line in buffer
+      bufferRef.current = lines.pop() || '';
 
       for (const line of lines) {
         const trimmedLine = line.trim();
         if (!trimmedLine) continue;
 
-        // Try to parse temperature data
         const peltierMatch = trimmedLine.match(PELTIER_REGEX);
         const lidMatch = trimmedLine.match(LID_REGEX);
 
@@ -69,7 +65,6 @@ export const TemperaturePlot: React.FC = () => {
     };
   }, [isConnected, addDataPoint, setIsParsing]);
 
-  // Calculate axis ranges
   const minTemp = data.length > 0
     ? Math.min(...data.map((d) => Math.min(d.peltier, d.lid))) - 5
     : 0;

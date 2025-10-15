@@ -33,7 +33,6 @@ export const SerialControl: React.FC = () => {
   const addLog = useLogStore((state) => state.addLog);
 
   useEffect(() => {
-    // Check browser support
     if (!serialService.isSupported()) {
       setStatus('Web Serial API not supported', 'error');
       addLog('Web Serial API not supported in this browser', 'error');
@@ -53,20 +52,15 @@ export const SerialControl: React.FC = () => {
 
   const handleConnect = async () => {
     try {
-      // Request port from user
       const port = await serialService.requestPort();
-
-      // Connect to port
-      await serialService.connect(port, baudRate);
+      await serialService.connect(port, 115200);
 
       setPort(port);
       setIsConnected(true);
       setStatus(`Connected @ ${baudRate} Bd`, 'success');
       addLog(`Connected to serial port at ${baudRate} baud`, 'success');
 
-      // Set up data callback
       serialService.onData((data) => {
-        // This will be handled by TemperaturePlot component
         console.log('Serial data:', data);
       });
     } catch (error) {
@@ -96,7 +90,6 @@ export const SerialControl: React.FC = () => {
       </Typography>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {/* Port Selection */}
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <FormControl fullWidth size="small" disabled={isConnected}>
             <InputLabel>COM Port</InputLabel>
@@ -129,12 +122,10 @@ export const SerialControl: React.FC = () => {
           </Button>
         </Box>
 
-        {/* Baud Rate Info */}
         <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
           Baud Rate: 115200 (fixed)
         </Typography>
 
-        {/* Connect/Disconnect Buttons */}
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Button
             variant="contained"
@@ -157,7 +148,6 @@ export const SerialControl: React.FC = () => {
           </Button>
         </Box>
 
-        {/* Status Display */}
         <Alert severity={statusColor === 'success' ? 'success' : 'error'}>
           Status: {status}
         </Alert>

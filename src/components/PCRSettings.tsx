@@ -44,7 +44,6 @@ export const PCRSettings: React.FC = () => {
   const addLog = useLogStore((state) => state.addLog);
 
   useEffect(() => {
-    // Get available drives
     const drives = storageService.getAvailableDrives();
     setAvailableDrives(drives);
     if (drives.length > 0) {
@@ -53,13 +52,11 @@ export const PCRSettings: React.FC = () => {
   }, [setAvailableDrives, setSelectedDrive]);
 
   const handleSave = async () => {
-    // Validate protocol name
     if (!formData.protocolName.trim()) {
       addLog('Error: Protocol name cannot be empty', 'error');
       return;
     }
 
-    // Validate that at least some fields are filled
     const hasData = PCR_STAGES.some(
       (stage) =>
         formData[stage.tempKey as keyof PCRFormData] ||
@@ -90,7 +87,6 @@ export const PCRSettings: React.FC = () => {
   return (
     <Box sx={{ p: 2 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {/* Protocol Name */}
         <TextField
           fullWidth
           size="small"
@@ -100,7 +96,6 @@ export const PCRSettings: React.FC = () => {
           placeholder="Enter protocol name"
         />
 
-        {/* PCR Stages Table */}
         <Box sx={{ overflowX: 'auto' }}>
           <Table size="small">
             <TableHead>
@@ -161,7 +156,6 @@ export const PCRSettings: React.FC = () => {
 
         <Divider />
 
-        {/* Drive Selection and Save */}
         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <InputLabel>Select Drive</InputLabel>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import {
   Box,
   Button,
@@ -12,7 +12,6 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useFirmwareStore } from '../stores/firmwareStore';
 import { useSerialStore } from '../stores/serialStore';
 import { useLogStore } from '../stores/logStore';
-import { serialService } from '../services/serialService';
 import { ymodemService } from '../services/ymodemService';
 import { hexConverter } from '../services/hexConverter';
 
@@ -92,7 +91,7 @@ export const FirmwareUpgrade: React.FC = () => {
       const result = await ymodemService.sendFile(
         binaryData,
         file.name,
-        (index, name, total, done) => {
+        (_index, _name, total, done) => {
           const percent = Math.round((done / total) * 100);
           setProgress(percent);
           setStatus(`${percent}%`);

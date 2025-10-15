@@ -1,21 +1,11 @@
-import type { PCRProtocol, StorageOptions } from '../types';
+import type { PCRProtocol } from '../types';
 
-/**
- * Storage Service for saving PCR protocols
- * Uses File System Access API or fallback to download
- */
 class StorageService {
-  /**
-   * Check if File System Access API is supported
-   */
   isFileSystemAccessSupported(): boolean {
     return 'showSaveFilePicker' in window;
   }
 
-  /**
-   * Save PCR protocol to file
-   */
-  async saveProtocol(protocol: PCRProtocol, options?: StorageOptions): Promise<void> {
+  async saveProtocol(protocol: PCRProtocol): Promise<void> {
     const csvContent = this.protocolToCSV(protocol);
     const fileName = `${protocol.protocolName || 'protocol'}.txt`;
 
@@ -26,9 +16,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Convert PCR protocol to CSV format
-   */
   private protocolToCSV(protocol: PCRProtocol): string {
     const lines = ['Stage,Temperature,TimeSec,Cycles'];
 
@@ -49,9 +36,6 @@ class StorageService {
     return lines.join('\n');
   }
 
-  /**
-   * Save file using File System Access API
-   */
   private async saveWithFileSystemAccess(
     content: string,
     fileName: string
@@ -78,9 +62,6 @@ class StorageService {
     }
   }
 
-  /**
-   * Download file (fallback method)
-   */
   private downloadFile(content: string, fileName: string): void {
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -93,12 +74,7 @@ class StorageService {
     URL.revokeObjectURL(url);
   }
 
-  /**
-   * Get available drives (simulated for web)
-   */
   getAvailableDrives(): string[] {
-    // In browser, we can't enumerate actual drives
-    // This is a placeholder for the UI
     return ['Download'];
   }
 }

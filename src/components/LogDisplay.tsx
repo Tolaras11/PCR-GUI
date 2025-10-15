@@ -24,7 +24,6 @@ export const LogDisplay: React.FC = () => {
   const isDark = theme.palette.mode === 'dark';
   const LOG_COLORS = isDark ? LOG_COLORS_DARK : LOG_COLORS_LIGHT;
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);

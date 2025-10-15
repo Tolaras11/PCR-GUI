@@ -102,7 +102,7 @@ class HexConverter {
   async convertHexFile(file: File): Promise<Blob> {
     const content = await file.text();
     const binary = this.hexToBinary(content);
-    return new Blob([binary], { type: 'application/octet-stream' });
+    return new Blob([binary as BlobPart], { type: 'application/octet-stream' });
   }
 
   /**

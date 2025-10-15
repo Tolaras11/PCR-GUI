@@ -1,10 +1,6 @@
-import { createTheme, PaletteMode } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
-/**
- * MUI Theme Configuration for EasyPCR
- * Supports both light and dark modes
- */
-export const getTheme = (mode: PaletteMode) => createTheme({
+export const getTheme = (mode: 'light' | 'dark') => createTheme({
   palette: {
     mode,
     primary: {
